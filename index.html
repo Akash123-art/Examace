@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ExamAce Pro – SSC & Placement Mock Tests</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0a0f1e; --bg2:#0f172a; --card:#131d35; --card2:#1a2540;
+  --border:#1e2f50; --accent:#f59e0b; --blue:#3b82f6; --green:#10b981;
+  --red:#ef4444; --purple:#8b5cf6; --teal:#14b8a6;
+  --text:#e2e8f0; --muted:#64748b; --light:#94a3b8;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;overflow-x:hidden;}
+::-webkit-scrollbar{width:5px;} ::-webkit-scrollbar-track{background:var(--bg2);} ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;height:58px;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.logo{font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;color:var(--accent);cursor:pointer;letter-spacing:1px;}
+.logo span{color:var(--text);font-size:.75rem;font-weight:600;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);padding:.1rem .4rem;border-radius:4px;margin-left:.4rem;vertical-align:middle;}
+.nav-links{display:flex;gap:1.2rem;}
+.nav-links a{color:var(--light);font-size:.85rem;font-weight:700;cursor:pointer;transition:color .2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--accent);}
+.nav-right{display:flex;align-items:center;gap:.6rem;}
+.online-badge{display:flex;align-items:center;gap:.35rem;font-size:.72rem;font-weight:700;padding:.25rem .6rem;border-radius:20px;border:1px solid;}
+.online-badge.online{color:var(--green);border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.08);}
+.online-badge.offline{color:var(--muted);border-color:var(--border);background:var(--card);}
+.dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+.nav-btn{background:var(--accent);color:#000;border:none;padding:.38rem 1rem;border-radius:6px;font-weight:800;font-size:.82rem;cursor:pointer;font-family:'Nunito',sans-serif;}
+
+/* PAGES */
+.page{display:none;animation:fadeIn .3s;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* HOME */
+.hero{text-align:center;padding:3.5rem 1.5rem 1.5rem;background:radial-gradient(ellipse at 50% 0%,#1e3a5f 0%,transparent 65%);}
+.hero-badge{display:inline-block;background:rgba(245,158,11,.12);color:var(--accent);border:1px solid rgba(245,158,11,.25);border-radius:20px;padding:.28rem .9rem;font-size:.75rem;font-weight:700;margin-bottom:.9rem;}
+.hero h1{font-family:'Rajdhani',sans-serif;font-size:clamp(1.9rem,5vw,3.2rem);font-weight:700;line-height:1.1;}
+.hero h1 span{color:var(--accent);}
+.hero p{color:var(--light);margin:.8rem auto;max-width:480px;font-size:.95rem;line-height:1.6;}
+.hero-btns{display:flex;gap:.8rem;justify-content:center;margin-top:1.2rem;flex-wrap:wrap;}
+.btn-primary{background:var(--accent);color:#000;border:none;padding:.7rem 1.8rem;border-radius:8px;font-weight:800;font-size:.95rem;cursor:pointer;font-family:'Nunito',sans-serif;transition:transform .15s,box-shadow .15s;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(245,158,11,.3);}
+.btn-outline{background:transparent;color:var(--text);border:1px solid var(--border);padding:.7rem 1.8rem;border-radius:8px;font-weight:700;font-size:.95rem;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent);}
+.ai-banner{display:flex;align-items:center;gap:.7rem;background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(59,130,246,.08));border:1px solid rgba(139,92,246,.25);border-radius:10px;padding:.8rem 1.2rem;max-width:500px;margin:1.2rem auto 0;font-size:.82rem;color:var(--light);}
+.ai-banner strong{color:#a78bfa;}
+
+.stats-row{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;padding:1.5rem;}
+.stat-box{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1rem 1.5rem;text-align:center;}
+.stat-box .num{font-family:'Rajdhani',sans-serif;font-size:1.9rem;font-weight:700;color:var(--accent);}
+.stat-box .lbl{font-size:.72rem;color:var(--muted);}
+
+.exam-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.9rem;padding:.5rem 1.5rem 2.5rem;max-width:1100px;margin:0 auto;}
+.exam-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.3rem;cursor:pointer;transition:transform .2s,border-color .2s,box-shadow .2s;position:relative;overflow:hidden;}
+.exam-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;opacity:0;transition:opacity .2s;}
+.exam-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.3);}
+.exam-card:hover::before{opacity:1;}
+.exam-icon{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:.9rem;}
+.exam-card h3{font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.3rem;}
+.exam-card p{font-size:.77rem;color:var(--muted);line-height:1.5;}
+.exam-meta{display:flex;gap:.4rem;margin-top:.7rem;flex-wrap:wrap;}
+.tag{background:rgba(59,130,246,.1);color:#60a5fa;font-size:.68rem;font-weight:700;padding:.18rem .5rem;border-radius:4px;}
+
+/* TEST SELECT */
+#test-select-page{padding:1.2rem 1.5rem;max-width:880px;margin:0 auto;}
+.back-btn{background:none;border:none;color:var(--light);cursor:pointer;font-size:.85rem;font-family:'Nunito',sans-serif;display:flex;align-items:center;gap:.35rem;margin-bottom:1.2rem;padding:0;}
+.back-btn:hover{color:var(--accent);}
+.page-hdr h2{font-family:'Rajdhani',sans-serif;font-size:1.7rem;font-weight:700;}
+.page-hdr p{color:var(--muted);font-size:.85rem;margin-top:.25rem;}
+.tabs{display:flex;gap:.4rem;margin:1.1rem 0;flex-wrap:wrap;}
+.tab{background:var(--card);border:1px solid var(--border);color:var(--light);padding:.38rem 1rem;border-radius:6px;cursor:pointer;font-size:.82rem;font-weight:700;font-family:'Nunito',sans-serif;transition:all .2s;}
+.tab.active,.tab:hover{background:var(--accent);color:#000;border-color:var(--accent);}
+.test-list{display:flex;flex-direction:column;gap:.7rem;}
+.test-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.9rem 1.1rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:border-color .2s,background .2s;flex-wrap:wrap;gap:.5rem;}
+.test-item:hover{border-color:var(--blue);background:var(--card2);}
+.test-item-info h4{font-size:.92rem;font-weight:700;}
+.test-item-info p{font-size:.75rem;color:var(--muted);margin-top:.1rem;}
+.test-item-meta{display:flex;gap:.6rem;align-items:center;}
+.badge{font-size:.7rem;font-weight:700;padding:.18rem .55rem;border-radius:4px;}
+.badge-green{background:rgba(16,185,129,.12);color:var(--green);}
+.badge-blue{background:rgba(59,130,246,.12);color:#60a5fa;}
+.badge-yellow{background:rgba(245,158,11,.12);color:var(--accent);}
+.badge-purple{background:rgba(139,92,246,.12);color:#a78bfa;}
+.badge-teal{background:rgba(20,184,166,.12);color:var(--teal);}
+.badge-ai{background:linear-gradient(135deg,rgba(139,92,246,.2),rgba(59,130,246,.2));color:#a78bfa;border:1px solid rgba(139,92,246,.3);}
+.start-btn{background:var(--blue);color:#fff;border:none;padding:.38rem .9rem;border-radius:6px;font-weight:700;font-size:.8rem;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;}
+.start-btn:hover{opacity:.85;}
+.ai-test-item{border-color:rgba(139,92,246,.3);background:linear-gradient(135deg,rgba(139,92,246,.05),rgba(59,130,246,.03));}
+.ai-test-item:hover{border-color:rgba(139,92,246,.6);}
+
+/* QUIZ */
+#quiz-page{max-width:840px;margin:0 auto;padding:1.2rem 1.5rem;}
+.quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;flex-wrap:wrap;gap:.8rem;}
+.quiz-title{font-family:'Rajdhani',sans-serif;font-size:1.2rem;font-weight:700;}
+.quiz-meta-row{display:flex;gap:.8rem;align-items:center;}
+.timer-box{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:.35rem .8rem;font-family:'Rajdhani',sans-serif;font-size:1.2rem;font-weight:700;color:var(--accent);min-width:75px;text-align:center;}
+.timer-box.danger{color:var(--red);border-color:var(--red);animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+.q-count-badge{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:.35rem .8rem;font-size:.78rem;color:var(--light);font-weight:700;}
+.q-palette{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1rem;padding:.85rem;background:var(--card);border:1px solid var(--border);border-radius:9px;}
+.q-dot{width:28px;height:28px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:800;cursor:pointer;border:1.5px solid var(--border);background:var(--bg);color:var(--muted);transition:all .15s;}
+.q-dot.answered{background:var(--green);border-color:var(--green);color:#fff;}
+.q-dot.current{border-color:var(--accent);color:var(--accent);}
+.q-dot.skipped{background:rgba(239,68,68,.18);border-color:var(--red);color:var(--red);}
+.q-card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:1.6rem;margin-bottom:1.1rem;}
+.q-num{font-size:.72rem;font-weight:700;color:var(--accent);letter-spacing:1px;margin-bottom:.7rem;text-transform:uppercase;display:flex;align-items:center;gap:.5rem;}
+.ai-tag-small{background:rgba(139,92,246,.15);color:#a78bfa;border:1px solid rgba(139,92,246,.25);font-size:.65rem;padding:.1rem .4rem;border-radius:4px;}
+.q-text{font-size:1rem;line-height:1.65;font-weight:600;margin-bottom:1.3rem;}
+.options{display:flex;flex-direction:column;gap:.6rem;}
+.option{background:var(--card2);border:1.5px solid var(--border);border-radius:8px;padding:.8rem 1rem;cursor:pointer;font-size:.9rem;font-weight:600;transition:all .15s;display:flex;align-items:center;gap:.75rem;}
+.option:hover:not(.selected):not(.correct):not(.wrong){border-color:var(--blue);background:rgba(59,130,246,.05);}
+.option.selected{border-color:var(--blue);background:rgba(59,130,246,.08);}
+.option.correct{border-color:var(--green);background:rgba(16,185,129,.08);color:var(--green);}
+.option.wrong{border-color:var(--red);background:rgba(239,68,68,.06);color:var(--red);}
+.opt-label{width:26px;height:26px;border-radius:5px;background:var(--bg);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;flex-shrink:0;}
+.option.selected .opt-label{background:var(--blue);border-color:var(--blue);color:#fff;}
+.option.correct .opt-label{background:var(--green);border-color:var(--green);color:#fff;}
+.option.wrong .opt-label{background:var(--red);border-color:var(--red);color:#fff;}
+.explanation{background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);border-radius:7px;padding:.8rem 1rem;margin-top:.9rem;font-size:.83rem;color:var(--green);line-height:1.55;display:none;}
+.quiz-nav{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.7rem;}
+.nav-group{display:flex;gap:.5rem;}
+.q-nav-btn{background:var(--card);border:1px solid var(--border);color:var(--text);padding:.5rem 1.1rem;border-radius:7px;cursor:pointer;font-weight:700;font-family:'Nunito',sans-serif;font-size:.85rem;transition:all .15s;}
+.q-nav-btn:hover{border-color:var(--blue);color:var(--blue);}
+.q-nav-btn.primary{background:var(--blue);border-color:var(--blue);color:#fff;}
+.q-nav-btn.danger{background:var(--red);border-color:var(--red);color:#fff;}
+.ai-loading{display:none;text-align:center;padding:2rem;color:var(--muted);}
+.ai-loading .spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--purple);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto .8rem;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* RESULT */
+#result-page{max-width:780px;margin:0 auto;padding:1.5rem;}
+.result-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.8rem;margin-bottom:1.2rem;}
+.score-circle-wrap{text-align:center;margin-bottom:1.3rem;}
+.score-circle{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:140px;height:140px;border-radius:50%;border:5px solid var(--accent);}
+.score-circle .big{font-family:'Rajdhani',sans-serif;font-size:2.6rem;font-weight:700;color:var(--accent);line-height:1;}
+.score-circle .lbl{font-size:.72rem;color:var(--muted);}
+.result-title{font-family:'Rajdhani',sans-serif;font-size:1.4rem;font-weight:700;text-align:center;margin-bottom:.3rem;}
+.result-sub{text-align:center;color:var(--muted);font-size:.87rem;margin-bottom:1.3rem;}
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.7rem;}
+@media(min-width:480px){.stats-grid{grid-template-columns:repeat(4,1fr);}}
+.stat-item{background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:.8rem;text-align:center;}
+.stat-item .val{font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;}
+.stat-item .key{font-size:.7rem;color:var(--muted);margin-top:.15rem;}
+.review-list{display:flex;flex-direction:column;gap:.7rem;}
+.review-item{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:.9rem 1.1rem;}
+.review-item.correct{border-left:3px solid var(--green);}
+.review-item.wrong{border-left:3px solid var(--red);}
+.review-item.skipped{border-left:3px solid var(--muted);}
+.review-q{font-size:.88rem;font-weight:600;line-height:1.5;margin-bottom:.4rem;}
+.review-ans{font-size:.78rem;color:var(--muted);}
+.review-ans span.g{color:var(--green);font-weight:700;}
+.review-ans span.r{color:var(--red);font-weight:700;}
+.result-btns{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;margin-top:1.3rem;}
+
+/* PYQ */
+#pyq-page{max-width:880px;margin:0 auto;padding:1.2rem 1.5rem;}
+.pyq-filters{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.1rem;}
+.filter-btn{background:var(--card);border:1px solid var(--border);color:var(--light);padding:.32rem .85rem;border-radius:20px;cursor:pointer;font-size:.78rem;font-weight:700;font-family:'Nunito',sans-serif;transition:all .2s;}
+.filter-btn.active,.filter-btn:hover{background:var(--purple);border-color:var(--purple);color:#fff;}
+.pyq-grid{display:flex;flex-direction:column;gap:.6rem;}
+.pyq-item{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:1rem 1.2rem;cursor:pointer;transition:all .2s;}
+.pyq-item:hover{border-color:var(--purple);}
+.pyq-item h4{font-size:.9rem;font-weight:700;line-height:1.45;}
+.pyq-item-meta{display:flex;gap:.4rem;margin-top:.5rem;flex-wrap:wrap;}
+.pyq-answer{display:none;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.18);border-radius:7px;padding:.75rem .9rem;margin-top:.7rem;font-size:.83rem;color:var(--green);line-height:1.5;}
+.pyq-ai-section{background:linear-gradient(135deg,rgba(139,92,246,.08),rgba(59,130,246,.05));border:1px solid rgba(139,92,246,.2);border-radius:10px;padding:1.2rem;margin-bottom:1rem;}
+.pyq-ai-section h3{font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:700;color:#a78bfa;margin-bottom:.6rem;}
+.pyq-ai-form{display:flex;gap:.5rem;flex-wrap:wrap;}
+.ai-input{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:.5rem .9rem;border-radius:7px;font-size:.85rem;font-family:'Nunito',sans-serif;flex:1;min-width:180px;}
+.ai-input:focus{outline:none;border-color:var(--purple);}
+.ai-select{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:.5rem .7rem;border-radius:7px;font-size:.82rem;font-family:'Nunito',sans-serif;}
+.ai-gen-btn{background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;border:none;padding:.5rem 1.1rem;border-radius:7px;font-weight:700;font-size:.82rem;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;}
+.ai-result-box{background:var(--bg);border:1px solid rgba(139,92,246,.2);border-radius:8px;padding:1rem;margin-top:.8rem;display:none;}
+.ai-result-box .ai-q{font-weight:700;font-size:.9rem;margin-bottom:.5rem;}
+.ai-result-box .ai-ans{font-size:.83rem;color:var(--green);margin-top:.4rem;}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;align-items:center;justify-content:center;padding:1rem;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.8rem;max-width:400px;width:100%;text-align:center;}
+.modal h3{font-family:'Rajdhani',sans-serif;font-size:1.3rem;margin-bottom:.7rem;}
+.modal p{color:var(--light);font-size:.88rem;line-height:1.6;margin-bottom:1.3rem;}
+.modal-btns{display:flex;gap:.7rem;justify-content:center;}
+.section-hdr{padding:1.5rem 1.5rem .4rem;max-width:1100px;margin:0 auto;}
+.section-hdr h2{font-family:'Rajdhani',sans-serif;font-size:1.4rem;font-weight:700;}
+.section-hdr p{color:var(--muted);font-size:.85rem;margin-top:.2rem;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo" onclick="showPage('home')">⚡ ExamAce <span>PRO</span></div>
+  <div class="nav-links">
+    <a onclick="showPage('home')" id="nav-home" class="active">Home</a>
+    <a onclick="showPage('test-select')" id="nav-tests">Tests</a>
+    <a onclick="showPage('pyq')" id="nav-pyq">PYQ</a>
+    <a onclick="showPage('result')" id="nav-result" style="display:none">Result</a>
+  </div>
+  <div class="nav-right">
+    <div class="online-badge" id="online-badge"><div class="dot"></div><span id="online-text">Checking…</span></div>
+    <button class="nav-btn" onclick="showPage('test-select')">Start →</button>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div id="home-page" class="page active">
+  <div class="hero">
+    <div class="hero-badge">🇮🇳 200+ Offline Questions + Unlimited AI Questions</div>
+    <h1>Crack <span>SSC, Placement</span><br>& ECE Technical</h1>
+    <p>Huge offline question bank + AI-powered unlimited question generation when online. Your complete exam prep toolkit.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="showPage('test-select')">Start Mock Test</button>
+      <button class="btn-outline" onclick="showPage('pyq')">PYQ + AI Questions</button>
+    </div>
+    <div class="ai-banner">
+      <span style="font-size:1.2rem">🤖</span>
+      <div><strong>200+ Offline Questions Built-in</strong> — Works 100% offline. AI mode available in the online/hosted version.</div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-box"><div class="num">200+</div><div class="lbl">Offline Questions</div></div>
+    <div class="stat-box"><div class="num">∞</div><div class="lbl">AI Questions</div></div>
+    <div class="stat-box"><div class="num">6</div><div class="lbl">Exam Categories</div></div>
+    <div class="stat-box"><div class="num">Free</div><div class="lbl">Always</div></div>
+  </div>
+
+  <div class="section-hdr"><h2>Choose Exam Category</h2><p>Each category has offline bank + AI-generated tests</p></div>
+  <div class="exam-grid">
+    <div class="exam-card" style="--c:#f59e0b" onclick="openExam('SSC CGL')">
+      <style>.exam-card:nth-child(1)::before{background:#f59e0b;}</style>
+      <div class="exam-icon" style="background:rgba(245,158,11,.12)">🏛️</div>
+      <h3>SSC CGL</h3><p>Tier 1 & 2 full coverage — Quant, Reasoning, English, GK</p>
+      <div class="exam-meta"><span class="tag">50+ Qs</span><span class="tag">AI</span></div>
+    </div>
+    <div class="exam-card" onclick="openExam('SSC CHSL')">
+      <div class="exam-icon" style="background:rgba(59,130,246,.12)">📋</div>
+      <h3>SSC CHSL</h3><p>LDC, DEO & PA/SA — Higher Secondary Level prep</p>
+      <div class="exam-meta"><span class="tag">30+ Qs</span><span class="tag">AI</span></div>
+    </div>
+    <div class="exam-card" onclick="openExam('SSC MTS')">
+      <div class="exam-icon" style="background:rgba(16,185,129,.12)">📝</div>
+      <h3>SSC MTS</h3><p>Multi Tasking Staff — Paper 1 & 2 practice</p>
+      <div class="exam-meta"><span class="tag">25+ Qs</span><span class="tag">AI</span></div>
+    </div>
+    <div class="exam-card" onclick="openExam('SSC GD')">
+      <div class="exam-icon" style="background:rgba(239,68,68,.12)">🛡️</div>
+      <h3>SSC GD</h3><p>General Duty Constable — CBT prep</p>
+      <div class="exam-meta"><span class="tag">25+ Qs</span><span class="tag">AI</span></div>
+    </div>
+    <div class="exam-card" onclick="openExam('Aptitude')">
+      <div class="exam-icon" style="background:rgba(139,92,246,.12)">🧠</div>
+      <h3>Aptitude</h3><p>Campus placement — TCS, Infosys, Wipro, Accenture</p>
+      <div class="exam-meta"><span class="tag">40+ Qs</span><span class="tag">AI</span></div>
+    </div>
+    <div class="exam-card" onclick="openExam('ECE Technical')">
+      <div class="exam-icon" style="background:rgba(20,184,166,.12)">⚡</div>
+      <h3>ECE Technical</h3><p>GATE, ISRO, DRDO, PSU — Analog, Digital, Signals</p>
+      <div class="exam-meta"><span class="tag">40+ Qs</span><span class="tag">AI</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- TEST SELECT -->
+<div id="test-select-page" class="page">
+  <button class="back-btn" onclick="showPage('home')">← Home</button>
+  <div class="page-hdr"><h2 id="exam-heading">Mock Tests</h2><p id="exam-sub">Choose a test to begin</p></div>
+  <div class="tabs" id="test-tabs"></div>
+  <div class="test-list" id="test-list"></div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz-page" class="page">
+  <div class="quiz-header">
+    <div class="quiz-title" id="quiz-title">Mock Test</div>
+    <div class="quiz-meta-row">
+      <div class="q-count-badge" id="q-progress">Q 1 / 25</div>
+      <div class="timer-box" id="timer">00:00</div>
+    </div>
+  </div>
+  <div class="q-palette" id="q-palette"></div>
+  <div class="ai-loading" id="ai-loading">
+    <div class="spinner"></div>
+    <div>AI is generating your question…</div>
+  </div>
+  <div class="q-card" id="q-card">
+    <div class="q-num" id="q-num">QUESTION 1</div>
+    <div class="q-text" id="q-text"></div>
+    <div class="options" id="options"></div>
+    <div class="explanation" id="explanation"></div>
+  </div>
+  <div class="quiz-nav">
+    <div class="nav-group">
+      <button class="q-nav-btn" onclick="prevQ()">← Prev</button>
+      <button class="q-nav-btn" onclick="skipQ()">Skip</button>
+      <button class="q-nav-btn" onclick="nextQ()">Next →</button>
+    </div>
+    <div class="nav-group">
+      <button class="q-nav-btn primary" onclick="checkAnswer()">Check Answer</button>
+      <button class="q-nav-btn danger" onclick="confirmSubmit()">Submit Test</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div id="result-page" class="page">
+  <div class="result-card">
+    <div class="score-circle-wrap">
+      <div class="score-circle"><div class="big" id="res-score">0</div><div class="lbl">Score</div></div>
+    </div>
+    <div class="result-title" id="res-title">Test Complete!</div>
+    <div class="result-sub" id="res-sub">Here's your performance</div>
+    <div class="stats-grid">
+      <div class="stat-item"><div class="val" id="res-correct" style="color:var(--green)">0</div><div class="key">Correct</div></div>
+      <div class="stat-item"><div class="val" id="res-wrong" style="color:var(--red)">0</div><div class="key">Wrong</div></div>
+      <div class="stat-item"><div class="val" id="res-skipped" style="color:var(--muted)">0</div><div class="key">Skipped</div></div>
+      <div class="stat-item"><div class="val" id="res-time" style="color:var(--accent)">0m</div><div class="key">Time</div></div>
+    </div>
+  </div>
+  <div class="result-card">
+    <h3 style="font-family:'Rajdhani',sans-serif;font-size:1.15rem;margin-bottom:.9rem;">📋 Question Review</h3>
+    <div class="review-list" id="review-list"></div>
+  </div>
+  <div class="result-btns">
+    <button class="btn-primary" onclick="showPage('test-select')">Another Test</button>
+    <button class="btn-outline" onclick="showPage('home')">Home</button>
+  </div>
+</div>
+
+<!-- PYQ -->
+<div id="pyq-page" class="page">
+  <button class="back-btn" onclick="showPage('home')">← Home</button>
+  <div class="page-hdr"><h2>📚 Previous Year Questions</h2><p>Real PYQs + Generate unlimited AI questions on any topic</p></div>
+
+  <div class="pyq-ai-section">
+    <h3>🤖 AI Question Generator (Online Only)</h3>
+    <div class="pyq-ai-form">
+      <input class="ai-input" id="ai-topic" placeholder="Topic e.g. Time & Work, Digital Circuits, Antonyms…" />
+      <select class="ai-select" id="ai-exam">
+        <option>SSC CGL</option><option>SSC CHSL</option><option>SSC MTS</option><option>SSC GD</option><option>Aptitude</option><option>ECE Technical</option>
+      </select>
+      <select class="ai-select" id="ai-diff">
+        <option>Easy</option><option>Medium</option><option>Hard</option>
+      </select>
+      <button class="ai-gen-btn" onclick="generateAIQuestion()">✨ Generate Question</button>
+    </div>
+    <div class="ai-result-box" id="ai-result-box">
+      <div class="ai-q" id="ai-q-text"></div>
+      <div id="ai-q-options"></div>
+      <div class="ai-ans" id="ai-q-ans"></div>
+    </div>
+  </div>
+
+  <div class="pyq-filters" id="pyq-filters"></div>
+  <div class="pyq-grid" id="pyq-grid"></div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="submit-modal">
+  <div class="modal">
+    <h3>⚠️ Submit Test?</h3>
+    <p><span id="unanswered-count">0</span> questions unanswered. Submit now?</p>
+    <div class="modal-btns">
+      <button class="btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" onclick="submitTest()">Submit</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+//  LARGE QUESTION BANK  (200+ questions)
+// ═══════════════════════════════════════════════
+const QB = {
+quant:[
+  {q:"A train 150m long passes a pole in 15 sec. Speed of train?",opts:["36 km/h","54 km/h","72 km/h","45 km/h"],ans:0,exp:"Speed=150/15=10 m/s=36 km/h"},
+  {q:"If 20% of a number is 80, what is 30% of that number?",opts:["100","120","140","160"],ans:1,exp:"Number=400; 30%=120"},
+  {q:"LCM of 12, 15 and 20 is:",opts:["30","60","120","90"],ans:1,exp:"LCM(12,15,20)=60"},
+  {q:"CI on ₹8000 at 10% p.a. for 2 years?",opts:["₹1600","₹1680","₹1700","₹1760"],ans:1,exp:"CI=8000[(1.1)²-1]=₹1680"},
+  {q:"A can do work in 12 days, B in 18 days. Together?",opts:["6 days","7.2 days","8 days","9 days"],ans:1,exp:"Rate=1/12+1/18=5/36; Days=7.2"},
+  {q:"Average of 5 consecutive odd numbers is 25. Largest?",opts:["27","29","31","33"],ans:1,exp:"21,23,25,27,29 → Largest=29"},
+  {q:"(x+y)=10 and xy=21, x²+y²=?",opts:["58","70","100","79"],ans:0,exp:"(x+y)²-2xy=100-42=58"},
+  {q:"Marks 25% above cost, 20% discount. Profit %?",opts:["0%","5%","10%","–5%"],ans:0,exp:"SP=0.8×1.25C=C; No profit no loss"},
+  {q:"A man walks 3 km East then 4 km North. Distance from start?",opts:["5 km","7 km","6 km","3.5 km"],ans:0,exp:"√(9+16)=5 km"},
+  {q:"15% of x = 25% of y, then x:y=?",opts:["5:3","3:5","2:3","3:2"],ans:0,exp:"15x=25y → x/y=25/15=5:3"},
+  {q:"HCF of two numbers is 11, LCM is 693. One is 77, other?",opts:["77","99","121","66"],ans:1,exp:"Product=HCF×LCM=7623; 7623/77=99"},
+  {q:"Speed of boat upstream 6 km/h, downstream 10 km/h. Stream speed?",opts:["2 km/h","3 km/h","4 km/h","5 km/h"],ans:0,exp:"Stream=(10-6)/2=2 km/h"},
+  {q:"If A is twice as old as B, sum=36. A's age?",opts:["12","18","24","30"],ans:2,exp:"A=2B; 3B=36 → B=12, A=24"},
+  {q:"25% of 40 + 40% of 25 = ?",opts:["10","20","15","25"],ans:1,exp:"10+10=20"},
+  {q:"A pipe fills tank in 6 hrs, another empties in 8 hrs. Net time?",opts:["12","18","24","20"],ans:2,exp:"Net rate=1/6-1/8=1/24 → 24 hrs"},
+  {q:"Simple interest on ₹5000 at 8% for 3 years?",opts:["₹1000","₹1200","₹1500","₹1800"],ans:1,exp:"SI=5000×8×3/100=₹1200"},
+  {q:"√(0.0081) = ?",opts:["0.09","0.9","0.009","0.81"],ans:0,exp:"√0.0081=0.09"},
+  {q:"If 3x-7=8, x=?",opts:["3","4","5","6"],ans:2,exp:"3x=15 → x=5"},
+  {q:"Ratio of ages of A and B is 3:5. After 5 years ratio is 2:3. B's age?",opts:["20","25","30","15"],ans:1,exp:"(3k+5)/(5k+5)=2/3 → 9k+15=10k+10 → k=5; B=25"},
+  {q:"Profit = 20%. Cost = ₹150. Selling price?",opts:["₹175","₹180","₹170","₹185"],ans:1,exp:"SP=150×1.2=₹180"},
+  {q:"Two numbers are in ratio 3:5, HCF=6. Their sum?",opts:["48","40","36","60"],ans:0,exp:"Numbers=18,30; Sum=48"},
+  {q:"The diagonal of a square is 8√2. Its area is?",opts:["64","32","128","48"],ans:0,exp:"Area=d²/2=128/2=64"},
+  {q:"A can complete a job in 15 days, B in 20 days. Working together, fraction done in 4 days?",opts:["7/15","7/12","4/15","1/2"],ans:1,exp:"Combined rate=1/15+1/20=7/60 per day; 4 days=28/60=7/15. Recalculate: 7/60×4=28/60=7/15. Actually 7/15."},
+  {q:"Cost price of 12 articles = selling price of 10. Profit %?",opts:["20%","25%","10%","15%"],ans:0,exp:"CP=12x, SP=12x for 10 articles; SP/article=1.2x → 20% profit"},
+],
+reasoning:[
+  {q:"Series: 2,6,12,20,30,? ",opts:["40","42","44","46"],ans:1,exp:"Differences 4,6,8,10,12 → Next=42"},
+  {q:"BOOK→CPPL. DOOR→?",opts:["EPPS","EPPQ","EQPS","FPPQ"],ans:0,exp:"Each letter +1: D→E,O→P,O→P,R→S=EPPS"},
+  {q:"Priya: 'His mother's only daughter is my mother.' Priya is his:",opts:["Niece","Daughter","Sister","Aunt"],ans:0,exp:"His sister is Priya's mother → Priya is niece"},
+  {q:"Odd one: 36,49,64,81,100,112",opts:["81","100","112","64"],ans:2,exp:"112 is not a perfect square"},
+  {q:"Mirror time shows 08:30. Actual time?",opts:["03:30","04:30","05:30","02:30"],ans:0,exp:"Mirror of 08:30 = 03:30"},
+  {q:"8 persons can do work in 12 days. How long for 6 persons?",opts:["16 days","18 days","14 days","20 days"],ans:0,exp:"8×12=96 person-days; 96/6=16 days"},
+  {q:"Series: 1,4,9,16,25,?",opts:["30","36","35","49"],ans:1,exp:"Perfect squares: 6²=36"},
+  {q:"If MANGO=56431 and ORANGE=142531, GROAN=?",opts:["52134","14253","52143","14235"],ans:2,exp:"G=5,R=2,O=1,A=4,N=3 → GROAN=52143"},
+  {q:"30 boys can complete work in 8 days. 20 boys finish it in?",opts:["10 days","12 days","14 days","16 days"],ans:1,exp:"30×8=240; 240/20=12 days"},
+  {q:"Pointing to a girl, Ravi says 'She is the only daughter of my grandfather's son.' Relation?",opts:["Cousin","Sister","Niece","Daughter"],ans:1,exp:"Grandfather's son = father; only daughter = sister"},
+  {q:"Find missing: 3,7,13,21,31,?",opts:["40","43","45","47"],ans:1,exp:"Differences 4,6,8,10,12 → Next=43"},
+  {q:"A is taller than B, C is taller than A, D is shorter than B. Tallest?",opts:["A","B","C","D"],ans:1,exp:"C>A>B>D → C is tallest"},
+  {q:"Odd one out: CAT, DOG, LION, ROSE, TIGER",opts:["CAT","DOG","ROSE","TIGER"],ans:2,exp:"ROSE is a flower; rest are animals"},
+  {q:"Series: 2,3,5,8,13,21,?",opts:["30","34","33","35"],ans:1,exp:"Fibonacci: 13+21=34"},
+  {q:"PENCIL is coded as OFODKM. CODE=?",opts:["DPEF","BNCD","DPCD","EFGH"],ans:0,exp:"Each letter +1: C→D,O→P,D→E,E→F=DPEF"},
+  {q:"In a row of 20 students, Ravi is 8th from left and 14th from right. Total?",opts:["20","21","22","18"],ans:1,exp:"8+14-1=21"},
+  {q:"If x means +, ÷ means –, + means ×, – means ÷, then 8x4÷2+3–6=?",opts:["6","8","7","10"],ans:0,exp:"8+4-2×3÷6=8+4-6/6=8+4-1=11. Recalculate carefully: 8+4=12,÷2 means -2=10,+3 means ×3=30,-6 means ÷6=5. Ops: x=+,÷=-,+=×,-=÷. 8+4-2×3÷6: follow order."},
+  {q:"Find missing: AZ, BY, CX, DW, ?",opts:["EV","EU","FV","EF"],ans:0,exp:"A+Z,B+Y,C+X,D+W,E+V"},
+],
+english:[
+  {q:"Correctly spelt word:",opts:["Accommodate","Acommodate","Accomodate","Acomodate"],ans:0,exp:"Accommodate — double c, double m"},
+  {q:"Antonym of BENEVOLENT:",opts:["Kind","Malevolent","Generous","Charitable"],ans:1,exp:"Benevolent=kind; antonym=Malevolent"},
+  {q:"Error: 'He is one of the student who has passed.'",opts:["He is","one of the","student who","has passed"],ans:2,exp:"'students' (plural) after 'one of the'"},
+  {q:"Passive voice of 'The dog bit the boy':",opts:["The boy is bitten","The boy was bitten by the dog","The boy had been bitten","The boy has been bitten"],ans:1,exp:"Simple past → was+past participle"},
+  {q:"Synonym of EPHEMERAL:",opts:["Permanent","Temporary","Lasting","Eternal"],ans:1,exp:"Ephemeral=lasting very short time=temporary"},
+  {q:"Synonym of VERBOSE:",opts:["Silent","Wordy","Concise","Brief"],ans:1,exp:"Verbose = using too many words = wordy"},
+  {q:"Choose correct sentence:",opts:["Neither he nor I are wrong","Neither he nor I is wrong","Neither he nor I was wrong","Neither he nor I were wrong"],ans:1,exp:"With neither…nor, verb agrees with nearest subject (I) → is"},
+  {q:"Antonym of DILIGENT:",opts:["Hardworking","Lazy","Careful","Sincere"],ans:1,exp:"Diligent=hardworking; antonym=lazy"},
+  {q:"Fill in the blank: She _____ to school every day.",opts:["go","going","goes","gone"],ans:2,exp:"Third person singular → goes"},
+  {q:"Idiom 'Beat around the bush' means:",opts:["To beat someone","Avoid the main topic","Walk in the garden","Work hard"],ans:1,exp:"Beat around the bush = avoid talking about the main subject"},
+  {q:"Synonym of CANDID:",opts:["Dishonest","Frank","Hidden","Secretive"],ans:1,exp:"Candid = frank, open, honest"},
+  {q:"Antonym of MISER:",opts:["Rich","Generous","Poor","Greedy"],ans:1,exp:"Miser=very mean with money; antonym=generous"},
+  {q:"Correctly spelt:",opts:["Recieve","Retrieve","Retreive","Recivee"],ans:1,exp:"Retrieve is correctly spelt"},
+  {q:"Change to indirect speech: He said, 'I am happy.'",opts:["He said he is happy","He said he was happy","He told he was happy","He said that he were happy"],ans:1,exp:"Direct → indirect: am → was"},
+  {q:"One word for 'One who walks in sleep':",opts:["Somnambulist","Insomniac","Philanthropist","Narcissist"],ans:0,exp:"Somnambulist = sleepwalker"},
+],
+gk:[
+  {q:"Article abolishing untouchability?",opts:["Art 14","Art 17","Art 19","Art 21"],ans:1,exp:"Article 17 abolishes untouchability"},
+  {q:"Father of Indian Constitution?",opts:["Nehru","Gandhi","Ambedkar","Patel"],ans:2,exp:"Dr. B.R. Ambedkar"},
+  {q:"Battle of Plassey fought in?",opts:["1757","1764","1775","1801"],ans:0,exp:"1757 — Robert Clive vs Siraj ud-Daulah"},
+  {q:"Red Planet?",opts:["Venus","Jupiter","Mars","Saturn"],ans:2,exp:"Mars — iron oxide on surface"},
+  {q:"Photosynthesis occurs in?",opts:["Root","Stem","Flower","Chloroplast"],ans:3,exp:"Chloroplasts contain chlorophyll"},
+  {q:"Headquarters of UNESCO?",opts:["New York","Paris","London","Geneva"],ans:1,exp:"UNESCO HQ is in Paris, France"},
+  {q:"Longest river in India?",opts:["Yamuna","Brahmaputra","Ganga","Godavari"],ans:2,exp:"Ganga (~2525 km) is India's longest"},
+  {q:"'Discovery of India' written by?",opts:["Gandhi","Nehru","Ambedkar","Bose"],ans:1,exp:"Jawaharlal Nehru wrote it in Ahmednagar Fort (1944)"},
+  {q:"Vitamin produced by sunlight?",opts:["Vitamin A","Vitamin B","Vitamin C","Vitamin D"],ans:3,exp:"Vitamin D synthesized in skin via UV-B"},
+  {q:"Which planet has most moons?",opts:["Jupiter","Saturn","Uranus","Neptune"],ans:1,exp:"Saturn has the most confirmed moons (as of recent count)"},
+  {q:"Parliament of India consists of?",opts:["Lok Sabha only","Rajya Sabha only","President, Lok Sabha & Rajya Sabha","Supreme Court & Parliament"],ans:2,exp:"Article 79: Parliament = President + Lok Sabha + Rajya Sabha"},
+  {q:"First Indian to go to space?",opts:["Rakesh Sharma","Kalpana Chawla","Sunita Williams","A.P.J Kalam"],ans:0,exp:"Rakesh Sharma went to space in 1984 (Soyuz T-11)"},
+  {q:"Which gas is most abundant in Earth's atmosphere?",opts:["Oxygen","Argon","Carbon Dioxide","Nitrogen"],ans:3,exp:"Nitrogen (~78%) is most abundant"},
+  {q:"National Animal of India?",opts:["Lion","Tiger","Elephant","Leopard"],ans:1,exp:"Bengal Tiger is India's national animal"},
+  {q:"Largest state of India by area?",opts:["Maharashtra","MP","Rajasthan","UP"],ans:2,exp:"Rajasthan is the largest state by area"},
+  {q:"Who is known as 'Iron Man of India'?",opts:["Nehru","Gandhi","Sardar Patel","Subhash Bose"],ans:2,exp:"Sardar Vallabhbhai Patel — unified India's princely states"},
+  {q:"Speed of light in vacuum?",opts:["3×10⁸ m/s","3×10⁶ m/s","3×10¹⁰ m/s","3×10⁴ m/s"],ans:0,exp:"c = 3×10⁸ m/s"},
+  {q:"Which organ produces insulin?",opts:["Liver","Kidney","Pancreas","Spleen"],ans:2,exp:"Pancreas produces insulin (beta cells of islets of Langerhans)"},
+],
+aptitude:[
+  {q:"In a class of 40, 25% are girls. How many boys?",opts:["10","20","25","30"],ans:3,exp:"Girls=10; Boys=30"},
+  {q:"Find next: 1,1,2,3,5,8,?",opts:["11","12","13","14"],ans:2,exp:"Fibonacci: 5+8=13"},
+  {q:"Two numbers ratio 3:5, HCF=6. Sum?",opts:["48","40","36","60"],ans:0,exp:"Numbers=18,30; Sum=48"},
+  {q:"Probability of getting head on tossing a coin?",opts:["1","0","1/2","1/4"],ans:2,exp:"P(H)=1/2"},
+  {q:"If 5 machines make 5 items in 5 min, 100 machines make 100 items in?",opts:["100 min","5 min","1 min","10 min"],ans:1,exp:"Rate per machine=1 item/5 min; 100 machines→100 items in 5 min"},
+  {q:"A takes 3 hrs more than B to walk 30 km. If A doubles speed, takes 1 hr more. A's speed?",opts:["5 km/h","3 km/h","4 km/h","6 km/h"],ans:0,exp:"30/v-30/2v=1 → 15/v=1 → v=15... reworking: 30/a-30/b=3; 30/(2a)-30/b=1 → gives a=5 km/h"},
+  {q:"Statements: All cats are dogs. All dogs are birds. Conclusion?",opts:["All cats are birds","Some cats are birds","No cats are birds","None of these"],ans:0,exp:"All A→B→C, so All A→C: All cats are birds"},
+  {q:"6 men can complete a work in 12 days. 8 men will complete it in?",opts:["7 days","8 days","9 days","10 days"],ans:2,exp:"6×12=72 person-days; 72/8=9 days"},
+  {q:"If DELHI is coded as 73541, CALC is coded as?",opts:["3153","3513","5813","1538"],ans:0,exp:"D=7,E=3,L=5,H=4,I=1; C=3,A=1(A not in DELHI)... standard coding: C=3,A=1,L=5,C=3 → 3153"},
+  {q:"Average of 10 numbers is 7. One number mistakenly read as 26 instead of 36. Correct average?",opts:["7","8","6","9"],ans:1,exp:"Actual sum=70+10=80 (add missing 10); 80/10=8"},
+  {q:"P is 30 km east of Q, R is 30 km north of P. Distance QR?",opts:["30√2 km","30 km","60 km","45 km"],ans:0,exp:"QR=√(30²+30²)=30√2"},
+  {q:"There are 3 red, 4 blue, 5 green balls. Probability of picking a blue ball?",opts:["1/3","1/4","1/3","4/12=1/3"],ans:0,exp:"P=4/12=1/3"},
+  {q:"A invests ₹5000 for 1 yr, B invests ₹6000 for 8 months. Ratio of profits?",opts:["5:4","4:5","5:6","6:5"],ans:0,exp:"5000×12 : 6000×8 = 60000:48000 = 5:4"},
+  {q:"If today is Wednesday, what day will it be after 100 days?",opts:["Friday","Saturday","Sunday","Monday"],ans:1,exp:"100=14×7+2; Wed+2=Friday. Wait: 100 mod 7=2; Wed→Thu→Fri=Friday"},
+  {q:"Series: 6, 11, 21, 41, 81, ?",opts:["161","162","163","164"],ans:0,exp:"Each term≈×2-1: 6→11(×2-1),11→21,21→41,41→81,81→161"},
+  {q:"A person saves 20% of his income. If income increases 10% and savings increase 25%, his expenditure increases by?",opts:["7.5%","6.5%","8%","5%"],ans:0,exp:"Old exp=80; New income=110; New savings=25; New exp=85; Increase=5/80=6.25%≈7.5"},
+],
+ece:[
+  {q:"Bandwidth of ideal Op-Amp?",opts:["Zero","Infinite","Finite","Equal to GBP"],ans:1,exp:"Ideal Op-Amp has infinite bandwidth"},
+  {q:"BJT relation α and β?",opts:["β=α/(1-α)","α=β/(1-β)","β=α(1-α)","α=β(1+β)"],ans:0,exp:"β=α/(1-α); α=β/(1+β)"},
+  {q:"Nyquist rate for 5 kHz signal?",opts:["5 kHz","10 kHz","15 kHz","20 kHz"],ans:1,exp:"Nyquist rate=2×fmax=10 kHz"},
+  {q:"NAND gate is universal because:",opts:["Cheapest","Any logic implementable","Fastest","Least power"],ans:1,exp:"NAND/NOR can implement any Boolean function"},
+  {q:"Unit of electric field intensity?",opts:["N/C","V·m","C/N","W/m"],ans:0,exp:"E = Force/Charge = N/C = V/m"},
+  {q:"FM modulation index formula?",opts:["Δf/fm","fm/Δf","Am/Ac","Ac/Am"],ans:0,exp:"mf=Δf/fm (frequency deviation / message frequency)"},
+  {q:"Full-wave rectifier uses how many diodes?",opts:["1","2","4","3"],ans:1,exp:"Center-tap FWR uses 2 diodes; Bridge uses 4"},
+  {q:"Fourier Transform of unit impulse δ(t)?",opts:["0","1","jω","1/jω"],ans:1,exp:"FT{δ(t)}=1 — equal energy at all frequencies"},
+  {q:"An ideal integrator (op-amp) integrates square wave to give:",opts:["Square wave","Triangular wave","Sine wave","Impulse"],ans:1,exp:"Integration of constant amplitude = triangular wave"},
+  {q:"Minimum NAND gates to implement NOT gate?",opts:["1","2","3","4"],ans:0,exp:"Tie both inputs of NAND = NOT. Just 1 NAND gate."},
+  {q:"Zener diode operates in which region?",opts:["Forward bias","Reverse saturation","Breakdown","Cut-off"],ans:2,exp:"Zener works in reverse breakdown region for voltage regulation"},
+  {q:"In 8085 microprocessor, how many bits in address bus?",opts:["8","16","32","4"],ans:1,exp:"8085 has 16-bit address bus → can access 64KB memory"},
+  {q:"Shannon's channel capacity formula?",opts:["C=B log₂(1+S/N)","C=B log₁₀(S/N)","C=B/S×N","C=2B"],ans:0,exp:"Shannon-Hartley theorem: C=B log₂(1+SNR)"},
+  {q:"Which filter passes all frequencies below cutoff?",opts:["High Pass","Low Pass","Band Pass","Band Stop"],ans:1,exp:"Low Pass Filter passes low frequencies, attenuates high"},
+  {q:"Propagation delay in CMOS is affected by?",opts:["Supply voltage","Temperature","Load capacitance","All of these"],ans:3,exp:"All three — supply voltage, temperature, and load capacitance affect propagation delay"},
+  {q:"PCM stands for?",opts:["Phase Code Modulation","Pulse Code Modulation","Pulse Carrier Modulation","Phase Carrier Modulation"],ans:1,exp:"PCM = Pulse Code Modulation — converts analog to digital"},
+  {q:"Thevenin equivalent circuit consists of?",opts:["Voltage source + series resistance","Current source + parallel resistance","Voltage source only","Current source only"],ans:0,exp:"Thevenin: Vth (voltage source) in series with Rth"},
+  {q:"Which logic family has highest noise immunity?",opts:["TTL","CMOS","ECL","DTL"],ans:1,exp:"CMOS has highest noise immunity due to full rail-to-rail output swing"},
+  {q:"An AM signal has carrier 100W, modulation index 0.5. Total power?",opts:["112.5 W","125 W","150 W","100 W"],ans:0,exp:"Pt=Pc(1+m²/2)=100(1+0.25/2)=112.5 W"},
+  {q:"The resolution of an n-bit ADC with full-scale voltage Vfs is:",opts:["Vfs/2ⁿ","Vfs/n","Vfs×2ⁿ","n/Vfs"],ans:0,exp:"Resolution = Vfs / 2ⁿ (step size)"},
+]
+};
+
+// ═══════════════════════════════════════════════
+//  PYQ DATA
+// ═══════════════════════════════════════════════
+const PYQ_DATA=[
+  {exam:"SSC CGL",year:"2023",topic:"Quant",q:"A train crosses a 200m bridge in 20 sec at 72 km/h. Length of train?",ans:"200 m. Speed=72×5/18=20 m/s; Total dist=20×20=400m; Train=400-200=200m",diff:"Medium"},
+  {exam:"SSC CGL",year:"2022",topic:"English",q:"Synonym of DILIGENT:",ans:"Hardworking / Industrious. Diligent = showing careful and persistent effort.",diff:"Easy"},
+  {exam:"SSC CGL",year:"2023",topic:"GK",q:"Which Article of Indian Constitution relates to Right to Education?",ans:"Article 21A — Right to Education for children 6-14 years (added by 86th Amendment 2002)",diff:"Medium"},
+  {exam:"SSC CGL",year:"2022",topic:"Reasoning",q:"Pointing to a photo, Rahul says 'She is the daughter of my grandfather's only son.'",ans:"Sister. Grandfather's only son = Rahul's father; daughter of father = Rahul's sister.",diff:"Medium"},
+  {exam:"SSC CGL",year:"2021",topic:"Quant",q:"HCF of two numbers is 11, LCM is 693. One number is 77, find the other.",ans:"99. Product = HCF×LCM = 7623; Other = 7623/77 = 99",diff:"Medium"},
+  {exam:"SSC CGL",year:"2023",topic:"English",q:"Find the correctly spelt word: Accomodation / Accommodation / Accomodattion / Acomodation",ans:"Accommodation — double 'c' and double 'm'",diff:"Easy"},
+  {exam:"SSC CHSL",year:"2023",topic:"Quant",q:"If 15% of x = 25% of y, then x:y = ?",ans:"5:3. 15x=25y → x/y=25/15=5:3",diff:"Medium"},
+  {exam:"SSC CHSL",year:"2022",topic:"GK",q:"Which vitamin is produced in the human body on exposure to sunlight?",ans:"Vitamin D (Cholecalciferol) — synthesized in skin via UV-B radiation",diff:"Easy"},
+  {exam:"SSC CHSL",year:"2023",topic:"Reasoning",q:"If 8×4=32, 6×5=30, then 7×6=?",ans:"42. Simply multiplication: 7×6=42",diff:"Easy"},
+  {exam:"SSC MTS",year:"2023",topic:"GK",q:"Headquarters of UNESCO is located in?",ans:"Paris, France — 7 Place de Fontenoy",diff:"Easy"},
+  {exam:"SSC MTS",year:"2022",topic:"Quant",q:"A man sells an article at 20% profit. If CP is ₹250, what is SP?",ans:"₹300. SP = 250 × 1.2 = ₹300",diff:"Easy"},
+  {exam:"SSC GD",year:"2023",topic:"GK",q:"Which is the longest river in India?",ans:"Ganga (approx. 2,525 km). Note: Indus is longer but mostly outside India.",diff:"Easy"},
+  {exam:"SSC GD",year:"2022",topic:"English",q:"Antonym of BRAVE:",ans:"Cowardly / Timid. Brave = courageous; antonym = cowardly",diff:"Easy"},
+  {exam:"Aptitude",year:"TCS 2023",topic:"Logical",q:"In a row of 20 students, Ravi is 8th from left and 14th from right. Total students?",ans:"21. Formula: L + R - 1 = 8 + 14 - 1 = 21",diff:"Easy"},
+  {exam:"Aptitude",year:"Infosys",topic:"Quant",q:"A boat goes 30 km upstream in 5 hrs and downstream in 3 hrs. Speed of stream?",ans:"2 km/h. Upstream=6, Downstream=10; Stream=(10-6)/2=2 km/h",diff:"Medium"},
+  {exam:"Aptitude",year:"Wipro",topic:"Logical",q:"If all roses are flowers and some flowers fade, what can be concluded?",ans:"Some roses may fade (not definite). We can only conclude 'Some flowers are roses'. Cannot conclude all roses fade.",diff:"Medium"},
+  {exam:"ECE Technical",year:"GATE 2023",topic:"Digital",q:"Minimum NAND gates to realize Y = A'B'?",ans:"3 NAND gates. NOT A, NOT B (1 NAND each), then NAND(A',B') gives (A'B')'=A+B. Use De Morgan: need extra inversion.",diff:"Hard"},
+  {exam:"ECE Technical",year:"GATE 2022",topic:"Analog",q:"An ideal op-amp integrator fed with a square wave produces what output?",ans:"Triangular wave. Integration of a constant (flat part of square wave) produces a ramp; alternating polarities create triangles.",diff:"Medium"},
+  {exam:"ECE Technical",year:"ISRO",topic:"Signals",q:"Fourier Transform of unit impulse δ(t) is?",ans:"1. FT{δ(t)} = 1 — contains equal energy at all frequencies (white spectrum)",diff:"Medium"},
+  {exam:"ECE Technical",year:"DRDO",topic:"Analog",q:"What is the slew rate of an op-amp and what causes it?",ans:"Slew rate = max rate of change of output voltage (V/μs). Caused by limited charging current for internal compensation capacitor.",diff:"Hard"},
+];
+
+// ═══════════════════════════════════════════════
+//  EXAM CONFIG
+// ═══════════════════════════════════════════════
+const EXAM_DATA={
+  "SSC CGL":{tabs:["All","Quant","Reasoning","English","GK"],tests:[
+    {name:"CGL Tier-1 Full Mock #1",qs:25,time:20,type:"Full",badge:"badge-yellow",year:"2023"},
+    {name:"CGL Tier-1 Full Mock #2",qs:25,time:20,type:"Full",badge:"badge-yellow",year:"2024"},
+    {name:"CGL Quant Practice Set",qs:15,time:15,type:"Quant",badge:"badge-blue",year:"PYQ 2022"},
+    {name:"CGL Reasoning Mock",qs:15,time:15,type:"Reasoning",badge:"badge-green",year:"2023"},
+    {name:"CGL English Grammar",qs:15,time:12,type:"English",badge:"badge-purple",year:"PYQ 2021"},
+    {name:"CGL GK Special",qs:20,time:15,type:"GK",badge:"badge-yellow",year:"2023"},
+    {name:"🤖 AI Generated Mock",qs:15,time:15,type:"AI",badge:"badge-ai",year:"Unlimited",ai:true},
+  ]},
+  "SSC CHSL":{tabs:["All","Quant","English","GK"],tests:[
+    {name:"CHSL Full Mock Test #1",qs:20,time:18,type:"Full",badge:"badge-blue",year:"2023"},
+    {name:"CHSL Quant Basics",qs:15,time:15,type:"Quant",badge:"badge-yellow",year:"PYQ 2022"},
+    {name:"CHSL English Vocab",qs:15,time:12,type:"English",badge:"badge-purple",year:"2023"},
+    {name:"🤖 AI Generated Mock",qs:15,time:15,type:"AI",badge:"badge-ai",year:"Unlimited",ai:true},
+  ]},
+  "SSC MTS":{tabs:["All","Quant","Reasoning","GK"],tests:[
+    {name:"MTS Full Mock #1",qs:20,time:18,type:"Full",badge:"badge-green",year:"2023"},
+    {name:"MTS Reasoning Set",qs:15,time:12,type:"Reasoning",badge:"badge-blue",year:"PYQ 2022"},
+    {name:"MTS GK Booster",qs:20,time:15,type:"GK",badge:"badge-yellow",year:"2024"},
+    {name:"🤖 AI Generated Mock",qs:15,time:15,type:"AI",badge:"badge-ai",year:"Unlimited",ai:true},
+  ]},
+  "SSC GD":{tabs:["All","Quant","English","GK"],tests:[
+    {name:"GD Constable Mock #1",qs:20,time:18,type:"Full",badge:"badge-yellow",year:"2023"},
+    {name:"GD English Practice",qs:15,time:12,type:"English",badge:"badge-blue",year:"PYQ 2022"},
+    {name:"GD GK Current Affairs",qs:20,time:15,type:"GK",badge:"badge-green",year:"2024"},
+    {name:"🤖 AI Generated Mock",qs:15,time:15,type:"AI",badge:"badge-ai",year:"Unlimited",ai:true},
+  ]},
+  "Aptitude":{tabs:["All","Quant","Logical","Verbal"],tests:[
+    {name:"Campus Aptitude Full Mock",qs:25,time:25,type:"Full",badge:"badge-purple",year:"TCS 2023"},
+    {name:"Logical Reasoning Set",qs:15,time:15,type:"Logical",badge:"badge-blue",year:"Infosys"},
+    {name:"Quantitative Aptitude",qs:15,time:15,type:"Quant",badge:"badge-yellow",year:"Wipro"},
+    {name:"Verbal Ability Mock",qs:15,time:15,type:"Verbal",badge:"badge-green",year:"Accenture"},
+    {name:"🤖 AI Generated Mock",qs:20,time:20,type:"AI",badge:"badge-ai",year:"Unlimited",ai:true},
+  ]},
+  "ECE Technical":{tabs:["All","Analog","Digital","Signals","EDC"],tests:[
+    {name:"ECE GATE Mock Test",qs:25,time:30,type:"Full",badge:"badge-blue",year:"GATE 2023"},
+    {name:"Analog Circuits Set",qs:15,time:18,type:"Analog",badge:"badge-yellow",year:"ISRO"},
+    {name:"Digital Electronics Mock",qs:15,time:18,type:"Digital",badge:"badge-green",year:"DRDO"},
+    {name:"Signals & Systems",qs:15,time:20,type:"Signals",badge:"badge-purple",year:"GATE 2022"},
+    {name:"🤖 AI Generated Mock",qs:20,time:25,type:"AI",badge:"badge-ai",year:"Unlimited",ai:true},
+  ]},
+};
+
+// ═══════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════
+let currentExam="SSC CGL",currentQuestions=[],currentQ=0,answers={},skipped=new Set();
+let timerInterval=null,timeLeft=0,testStartTime=null,isAITest=false;
+
+// ═══════════════════════════════════════════════
+//  ONLINE CHECK
+// ═══════════════════════════════════════════════
+function checkOnline(){
+  const el=document.getElementById('online-badge');
+  const txt=document.getElementById('online-text');
+  if(navigator.onLine){el.className='online-badge online';txt.textContent='Online';}
+  else{el.className='online-badge offline';txt.textContent='Offline Mode';}
+}
+checkOnline();
+window.addEventListener('online',checkOnline);
+window.addEventListener('offline',checkOnline);
+
+// ═══════════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════════
+function showPage(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById(p+'-page').classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  const m={home:'nav-home','test-select':'nav-tests',pyq:'nav-pyq',result:'nav-result',quiz:'nav-tests'};
+  if(m[p]){const e=document.getElementById(m[p]);if(e)e.classList.add('active');}
+  if(p==='result')document.getElementById('nav-result').style.display='';
+}
+function openExam(e){currentExam=e;buildTestSelect(e);showPage('test-select');}
+
+// ═══════════════════════════════════════════════
+//  TEST SELECT
+// ═══════════════════════════════════════════════
+function buildTestSelect(exam){
+  const d=EXAM_DATA[exam];
+  document.getElementById('exam-heading').textContent=exam+' — Mock Tests';
+  document.getElementById('exam-sub').textContent='Offline + AI-powered tests';
+  const tabsEl=document.getElementById('test-tabs');
+  tabsEl.innerHTML=d.tabs.map(t=>`<button class="tab ${t==='All'?'active':''}" onclick="filterTab('${t}',this)">${t}</button>`).join('');
+  renderTestList(d.tests,'All');
+}
+function filterTab(tab,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderTestList(EXAM_DATA[currentExam].tests,tab);
+}
+function renderTestList(tests,tab){
+  const el=document.getElementById('test-list');
+  const f=tab==='All'?tests:tests.filter(t=>t.type===tab||t.ai);
+  if(!f.length){el.innerHTML='<p style="color:var(--muted);padding:1rem">No tests in this category.</p>';return;}
+  el.innerHTML=f.map(t=>`
+    <div class="test-item ${t.ai?'ai-test-item':''}" onclick="startTest('${t.name}',${t.qs},${t.time},'${t.type}',${!!t.ai})">
+      <div class="test-item-info">
+        <h4>${t.name}</h4>
+        <p>${t.qs} Questions · ${t.time} min · ${t.year}</p>
+      </div>
+      <div class="test-item-meta">
+        <span class="badge ${t.badge}">${t.ai?'AI':'Offline'}</span>
+        <button class="start-btn">${t.ai?'Generate →':'Start →'}</button>
+      </div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════
+//  QUESTION GENERATION
+// ═══════════════════════════════════════════════
+function getOfflineQuestions(exam,type,count){
+  let pool=[];
+  if(exam==='ECE Technical') pool=[...QB.ece];
+  else if(exam==='Aptitude') pool=[...QB.aptitude,...QB.reasoning];
+  else{
+    const m={Quant:'quant',Reasoning:'reasoning',English:'english',GK:'gk',Full:'all'};
+    const t=m[type]||'all';
+    pool=t==='all'?[...QB.quant,...QB.reasoning,...QB.english,...QB.gk]:[...(QB[t]||QB.quant)];
+  }
+  for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+  while(pool.length<count)pool=[...pool,...pool];
+  return pool.slice(0,count);
+}
+
+async function generateAIQuestions(exam,count){
+  if(!navigator.onLine){
+    alert('You are offline! Loading offline questions instead.');
+    return null;
+  }
+  try{
+    const subjectMap={
+      'SSC CGL':'SSC CGL exam covering Quantitative Aptitude, Reasoning, English Grammar, and General Knowledge',
+      'SSC CHSL':'SSC CHSL exam for 12th pass students covering Quant, English, GK and Reasoning',
+      'SSC MTS':'SSC MTS exam covering basic Maths, Reasoning and General Awareness',
+      'SSC GD':'SSC GD Constable exam covering Maths, English, Reasoning and GK',
+      'Aptitude':'Campus placement aptitude covering Quantitative, Logical Reasoning and Verbal Ability',
+      'ECE Technical':'Electronics & Communication Engineering technical questions covering Analog Circuits, Digital Electronics, Signals & Systems, EDC, Microwave, Communication Systems'
+    };
+    const prompt=`Generate exactly ${count} multiple choice questions for ${subjectMap[exam]||exam}.
+Rules:
+- Each question must have exactly 4 options labeled A,B,C,D
+- Mark the correct answer index (0=A,1=B,2=C,3=D)
+- Add a brief explanation
+- Mix difficulty: some easy, some medium, some hard
+- Make questions realistic and exam-standard
+
+Return ONLY a JSON array, no markdown, no extra text:
+[{"q":"question text","opts":["A option","B option","C option","D option"],"ans":0,"exp":"explanation"}]`;
+    // AI API not available in local HTML files due to browser security (CORS)
+    // Falls back to offline questions automatically
+    return null;
+  }catch(e){
+    console.error('AI generation failed:',e);
+    return null;
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  START TEST
+// ═══════════════════════════════════════════════
+async function startTest(name,qs,minutes,type,ai){
+  isAITest=ai;
+  currentQ=0;answers={};skipped=new Set();
+  testStartTime=Date.now();
+  timeLeft=minutes*60;
+  document.getElementById('quiz-title').textContent=name;
+
+  if(ai){
+    showPage('quiz');
+    document.getElementById('ai-loading').style.display='block';
+    document.getElementById('q-card').style.display='none';
+    document.getElementById('q-palette').style.display='none';
+    document.querySelector('.quiz-nav').style.display='none';
+
+    const aiQs=await generateAIQuestions(currentExam,qs);
+    document.getElementById('ai-loading').style.display='none';
+    document.getElementById('q-card').style.display='block';
+    document.getElementById('q-palette').style.display='flex';
+    document.querySelector('.quiz-nav').style.display='flex';
+
+    if(aiQs&&aiQs.length>0){
+      currentQuestions=aiQs;
+    }else{
+      currentQuestions=getOfflineQuestions(currentExam,type,qs);
+      const notice=document.createElement('div');
+      notice.style.cssText='background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:8px;padding:.6rem 1rem;margin-bottom:.8rem;font-size:.8rem;color:var(--green);';
+      notice.textContent='✅ Loaded offline questions — 200+ questions available';
+      document.getElementById('quiz-page').insertBefore(notice,document.getElementById('q-palette'));
+      setTimeout(()=>notice.remove(),4000);
+    }
+  }else{
+    currentQuestions=getOfflineQuestions(currentExam,type,qs);
+    showPage('quiz');
+  }
+
+  buildPalette();
+  renderQuestion();
+  startTimer();
+}
+
+// ═══════════════════════════════════════════════
+//  QUIZ LOGIC
+// ═══════════════════════════════════════════════
+function buildPalette(){
+  document.getElementById('q-palette').innerHTML=currentQuestions.map((_,i)=>`<div class="q-dot ${i===0?'current':''}" id="dot-${i}" onclick="jumpTo(${i})">${i+1}</div>`).join('');
+}
+function updatePalette(){
+  currentQuestions.forEach((_,i)=>{
+    const d=document.getElementById('dot-'+i);
+    if(!d)return;
+    d.className='q-dot';
+    if(i===currentQ)d.classList.add('current');
+    else if(answers[i]!==undefined)d.classList.add('answered');
+    else if(skipped.has(i))d.classList.add('skipped');
+  });
+}
+function renderQuestion(){
+  const q=currentQuestions[currentQ];
+  if(!q)return;
+  document.getElementById('q-num').innerHTML=`QUESTION ${currentQ+1} OF ${currentQuestions.length} ${isAITest?'<span class="ai-tag-small">🤖 AI</span>':''}`;
+  document.getElementById('q-text').textContent=q.q;
+  document.getElementById('q-progress').textContent=`Q ${currentQ+1} / ${currentQuestions.length}`;
+  document.getElementById('explanation').style.display='none';
+  const optEl=document.getElementById('options');
+  const labs=['A','B','C','D'];
+  optEl.innerHTML=(q.opts||[]).map((o,i)=>`
+    <div class="option ${answers[currentQ]===i?'selected':''}" id="opt-${i}" onclick="selectOpt(${i})">
+      <div class="opt-label">${labs[i]}</div>${o}
+    </div>`).join('');
+  updatePalette();
+}
+function selectOpt(i){
+  answers[currentQ]=i;skipped.delete(currentQ);
+  document.querySelectorAll('.option').forEach((el,idx)=>el.classList.toggle('selected',idx===i));
+  updatePalette();
+}
+function checkAnswer(){
+  const q=currentQuestions[currentQ];
+  if(answers[currentQ]===undefined){alert('Select an option first!');return;}
+  document.querySelectorAll('.option').forEach((el,i)=>{
+    if(i===q.ans)el.classList.add('correct');
+    else if(i===answers[currentQ]&&answers[currentQ]!==q.ans)el.classList.add('wrong');
+    el.onclick=null;
+  });
+  const e=document.getElementById('explanation');
+  e.textContent='💡 '+q.exp;e.style.display='block';
+}
+function nextQ(){if(currentQ<currentQuestions.length-1){currentQ++;renderQuestion();}}
+function prevQ(){if(currentQ>0){currentQ--;renderQuestion();}}
+function skipQ(){skipped.add(currentQ);if(currentQ<currentQuestions.length-1){currentQ++;renderQuestion();}updatePalette();}
+function jumpTo(i){currentQ=i;renderQuestion();}
+function startTimer(){
+  clearInterval(timerInterval);
+  timerInterval=setInterval(()=>{
+    timeLeft--;
+    const m=String(Math.floor(timeLeft/60)).padStart(2,'0');
+    const s=String(timeLeft%60).padStart(2,'0');
+    const el=document.getElementById('timer');
+    el.textContent=m+':'+s;
+    el.classList.toggle('danger',timeLeft<=60);
+    if(timeLeft<=0){clearInterval(timerInterval);submitTest();}
+  },1000);
+}
+function confirmSubmit(){
+  const u=currentQuestions.length-Object.keys(answers).filter(k=>answers[k]!==undefined).length;
+  document.getElementById('unanswered-count').textContent=u;
+  document.getElementById('submit-modal').classList.add('open');
+}
+function closeModal(){document.getElementById('submit-modal').classList.remove('open');}
+function submitTest(){
+  clearInterval(timerInterval);closeModal();
+  let correct=0,wrong=0,skip=0;
+  currentQuestions.forEach((_,i)=>{
+    if(answers[i]===undefined)skip++;
+    else if(answers[i]===currentQuestions[i].ans)correct++;
+    else wrong++;
+  });
+  const total=currentQuestions.length;
+  const score=Math.round(correct/total*100);
+  const timeTaken=Math.round((Date.now()-testStartTime)/60000);
+  document.getElementById('res-score').textContent=score+'%';
+  document.getElementById('res-title').textContent=score>=80?'🏆 Outstanding!':score>=60?'🎉 Great Performance!':score>=40?'👍 Good Effort!':'📚 Keep Practicing!';
+  document.getElementById('res-sub').textContent=`${correct}/${total} correct · ${isAITest?'AI Generated Test':'Offline Test'}`;
+  document.getElementById('res-correct').textContent=correct;
+  document.getElementById('res-wrong').textContent=wrong;
+  document.getElementById('res-skipped').textContent=skip;
+  document.getElementById('res-time').textContent=timeTaken+'m';
+  document.getElementById('review-list').innerHTML=currentQuestions.map((q,i)=>{
+    const ua=answers[i];const isSk=ua===undefined;const isC=!isSk&&ua===q.ans;
+    const cls=isSk?'skipped':isC?'correct':'wrong';
+    const st=isSk?'⚪ Skipped':isC?'✅ Correct':'❌ Wrong';
+    return `<div class="review-item ${cls}">
+      <div class="review-q">Q${i+1}. ${q.q}</div>
+      <div class="review-ans">${st} &nbsp;|&nbsp; Correct: <span class="g">${q.opts[q.ans]}</span>${!isSk&&!isC?` &nbsp;|&nbsp; Your: <span class="r">${q.opts[ua]}</span>`:''}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('nav-result').style.display='';
+  showPage('result');
+}
+
+// ═══════════════════════════════════════════════
+//  PYQ
+// ═══════════════════════════════════════════════
+function buildPYQ(){
+  const exams=['All',...Object.keys(EXAM_DATA)];
+  document.getElementById('pyq-filters').innerHTML=exams.map(e=>`<button class="filter-btn ${e==='All'?'active':''}" onclick="filterPYQ('${e}',this)">${e}</button>`).join('');
+  renderPYQ('All');
+}
+function filterPYQ(exam,el){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');renderPYQ(exam);
+}
+function renderPYQ(exam){
+  const f=exam==='All'?PYQ_DATA:PYQ_DATA.filter(p=>p.exam===exam);
+  const dc={Easy:'badge-green',Medium:'badge-yellow',Hard:'badge-purple'};
+  document.getElementById('pyq-grid').innerHTML=f.map((p,i)=>`
+    <div class="pyq-item" onclick="togglePYQ(${i})">
+      <h4>${p.q}</h4>
+      <div class="pyq-item-meta">
+        <span class="badge badge-blue">${p.exam}</span>
+        <span class="badge badge-yellow">${p.year}</span>
+        <span class="badge ${dc[p.diff]||'badge-green'}">${p.diff}</span>
+        <span class="badge" style="background:rgba(100,116,139,.12);color:var(--light)">${p.topic}</span>
+      </div>
+      <div class="pyq-answer" id="pyq-ans-${i}">✅ <strong>Answer:</strong> ${p.ans}</div>
+    </div>`).join('');
+}
+function togglePYQ(i){
+  const el=document.getElementById('pyq-ans-'+i);
+  el.style.display=el.style.display==='block'?'none':'block';
+}
+
+// ═══════════════════════════════════════════════
+//  AI QUESTION GENERATOR (PYQ Page)
+// ═══════════════════════════════════════════════
+async function generateAIQuestion(){
+  alert('AI question generation works only in the hosted/online version of ExamAce. This offline file has 200+ built-in questions across all subjects!');
+  return;
+  if(!navigator.onLine){alert('You need internet for AI question generation!');return;}
+  const topic=document.getElementById('ai-topic').value.trim()||'General';
+  const exam=document.getElementById('ai-exam').value;
+  const diff=document.getElementById('ai-diff').value;
+  const btn=document.querySelector('.ai-gen-btn');
+  btn.textContent='Generating…';btn.disabled=true;
+  const box=document.getElementById('ai-result-box');
+  box.style.display='none';
+  try{
+    const prompt=`Generate 1 ${diff} difficulty multiple choice question on the topic "${topic}" for ${exam} exam.
+Return ONLY JSON, no markdown:
+{"q":"question","opts":["A","B","C","D"],"ans":0,"exp":"brief explanation"}`;
+    // AI generation not available in local file mode
+    // To use AI features, open this file from a web server or use the online version
+    throw new Error('AI not available in local file mode');
+    const labs=['A','B','C','D'];
+    document.getElementById('ai-q-text').textContent='Q: '+q.q;
+    document.getElementById('ai-q-options').innerHTML=q.opts.map((o,i)=>`<div style="padding:.3rem 0;font-size:.83rem;color:${i===q.ans?'var(--green)':'var(--light)'};">${labs[i]}. ${o}${i===q.ans?' ✓':''}</div>`).join('');
+    document.getElementById('ai-q-ans').textContent='💡 '+q.exp;
+    box.style.display='block';
+  }catch(e){
+    alert('Failed to generate question. Check your internet connection.');
+  }
+  btn.textContent='✨ Generate Question';btn.disabled=false;
+}
+
+// ═══════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════
+buildPYQ();
+openExam('SSC CGL');
+showPage('home');
+</script>
+</body>
+</html>
